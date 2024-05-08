@@ -1,11 +1,14 @@
-- [cn](#操作指南)
-- [en](#Instructions)
-# 操作指南
 
->此SDK仅适用于深圳乐动机器人有限公司销售的激光雷达产品，产品型号为:
+- You can see the original version from [ldrobot](https://github.com/ldrobotSensorTeam/ldlidar_stl_sdk), here is a detailed usage guideline:
+
+# First step: Setup driver for your device
+(The driver works only for product by Ldrobot, LD06/LD19 )
+So make sure your device is this two type:
 > - LDROBOT LiDAR LD06
 > - LDROBOT LiDAR LD19
-## 0. 获取雷达的Linux SDK
+### Always remember `cd` to your workspace
+
+## 0. Create your workspace and get the driver from GitHub Repo within your workspace:
 ```bash
 cd ~
 
@@ -14,73 +17,53 @@ mkdir  ldlidar_ws
 cd ldlidar_ws
 
 git clone  https://github.com/ldrobotSensorTeam/ldlidar_stl_sdk.git
-# 或者
-git clone  https://gitee.com/ldrobotSensorTeam/ldlidar_stl_sdk.git
 ```
 
-## 1. 系统设置
-- 第一步，通过板载串口或者USB转串口模块(例如,cp2102模块)的方式使雷达连接到你的系统主板.
-- 第二步，设置雷达在系统中挂载的串口设备-x权限(以/dev/ttyUSB0为例)
-	- 实际使用时，根据雷达在你的系统中的实际挂载情况来设置，可以使用`ls -l /dev`命令查看.
+## 1. Before compiling: make sure you installed CMake and g++
+```bash
+sudo apt-get update
+sudo apt-get install cmake
+sudo apt-get install g++
+```
 
-``` bash
-cd ~/ldlidar_ws/ldlidar_stl_sdk
+## 2. Check the location of your radar
+`ls -l /dev` or `sudo dmesg | grep tty`
 
+## 3. Give permission for the serial port device — change the path to your own radar
+```bash
 sudo chmod 777 /dev/ttyUSB0
 ```
 
-## 2. 编译
+Well, I assume you connected the LiDAR to your system motherboard via an onboard serial port or usB-to-serial module (for example, CP2102 module).
 
+## 4. Give permission to .sh file, and run the build file
 ```bash
 cd ~/ldlidar_ws/ldlidar_stl_sdk
 
+chmod +x auto_build.sh
 ./auto_build.sh
 ```
 
-## 3. 运行
-  ``` bash
-  ./start_node.sh
-  ```
-
-# Instructions
-> This SDK is only applicable to the LiDAR products sold by Shenzhen LDROBOT Co., LTD. The product models are :
-> - LDROBOT LiDAR LD06
-> - LDROBOT LiDAR LD19
-## 0. get LiDAR Linux SDK
+## 5. Give permission to  ./start_node.sh and run it
 ```bash
-cd ~
-
-mkdir  ldlidar_ws
-
-cd ldlidar_ws
-
-git clone  https://github.com/ldrobotSensorTeam/ldlidar_stl_sdk.git
-# or
-git clone  https://gitee.com/ldrobotSensorTeam/ldlidar_stl_sdk.git
-```
-## step 1: system setup
-- Connect the LiDAR to your system motherboard via an onboard serial port or usB-to-serial module (for example, CP2102 module).
-
-- Set the -x permission for the serial port device mounted by the radar in the system (for example, /dev/ttyUSB0)
-
-  - In actual use, the LiDAR can be set according to the actual mounted status of your system, you can use 'ls -l /dev' command to view.
-
-``` bash
-cd ~/ldlidar_ws/ldlidar_stl_sdk
-
-sudo chmod 777 /dev/ttyUSB0
+chmod +x start_node.sh
+./start_node.sh
 ```
 
-## step 2: build
+## Finally it will work
+Then during the process, you need to input the value of your own device: 
 
-``` bash
-cd ~/ldlidar_ws/ldlidar_stl_sdk
+> input [product_type]=LD19
+> input [communication_mode]=serial
+> input [serial_port_number]=`/dev/ttyUSB0`
+> input [server_ip]=xxx.xx.x.xxx
+> input [server_port]=2024
 
-./auto_build.sh
+Check the serial port number of lidar:
+```bash
+sudo dmesg | grep tty
 ```
-
-## step 3: run
-
-  ``` bash
-  ./start_node.sh
-  ```
+Find the server ip:
+```bash
+ip addr
+```
