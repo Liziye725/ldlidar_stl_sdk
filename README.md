@@ -52,11 +52,13 @@ chmod +x start_node.sh
 
 ## Finally it will work
 Then during the process, you need to input the value of your own device(This is just an example of mine): 
-> input [product_type]=LD19  
-> input [communication_mode]=serial  
-> input [serial_port_number]=`/dev/ttyUSB0`  # Change it into the path of your lidar
-> input [server_ip]=xxx.xx.x.xxx  
-> input [server_port]=2024                   # Any number just not the same with current using port
+
+> `input [product_type]=LD19`  
+> `input [communication_mode]=serial`  
+> `input [serial_port_number]=/dev/ttyUSB0`  # Change it into the path of your lidar  
+> `input [server_ip]=xxx.xx.x.xxx`  
+> `input [server_port]=2024`  # Any number just not the same with currently using port
+
 
 
 Check the serial port number of lidar:
